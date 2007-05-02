@@ -19,7 +19,8 @@ def handle_xmlrpc(request):
     response = HttpResponse()
     if request.method == "POST":
         try:
-            response.write(xmlrpcdispatcher._marshaled_dispatch(request.raw_post_data))
+            response.write(
+                xmlrpcdispatcher._marshaled_dispatch(request.raw_post_data))
             return response
         except Exception, e:
             return Http404()
