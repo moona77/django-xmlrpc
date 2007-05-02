@@ -1,12 +1,17 @@
 """Uses SimpleXMLRPCServer's SimpleXMLRPCDispatcher to serve XML-RPC requests"""
 from django.core.exceptions import ImproperlyConfigured
 from SimpleXMLRPCServer import SimpleXMLRPCDispatcher
-from django.http import HttpResponse, Http404
+from xmlrpclib import Fault
+from django.http import HttpResponse, HttpResponseServerError
 from django.conf import settings
 from django.shortcuts import render_to_response
+import sys
 
-#xmlrpcdispatcher = SimpleXMLRPCDispatcher() #2.4
-xmlrpcdispatcher = SimpleXMLRPCDispatcher(allow_none=False, encoding=None) #2.5
+# Declare xmlrpcdispatcher correctly depending on our python version
+if sys.version_info[:3] >= (2,5,):
+    xmlrpcdispatcher = SimpleXMLRPCDispatcher(allow_none=False, encoding=None)
+else:
+    xmlrpcdispatcher = SimpleXMLRPCDispatcher()
 
 def test_xmlrpc(text):
     """
@@ -15,7 +20,13 @@ def test_xmlrpc(text):
     return "Here's a response! %s" % str(locals())
 
 def handle_xmlrpc(request):
-    """Handles XML-RPC requests. All XML-RPC calls should be forwarded here"""
+    """
+    Handles XML-RPC requests. All XML-RPC calls should be forwarded here
+
+    request
+        The HttpRequest object that carries the XML-RPC call. If this is a
+        GET request, nothing will happen (we only accept POST requests)
+    """
     response = HttpResponse()
     if request.method == "POST":
         try:
@@ -23,7 +34,7 @@ def handle_xmlrpc(request):
                 xmlrpcdispatcher._marshaled_dispatch(request.raw_post_data))
             return response
         except Exception, e:
-            return Http404()
+            return HttpResponseServerError()
     else:
         return render_to_response(settings.XMLRPC_GET_TEMPLATE)
 
