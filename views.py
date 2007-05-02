@@ -17,7 +17,6 @@ def test_xmlrpc(text):
 def handle_xmlrpc(request):
     """Handles XML-RPC requests. All XML-RPC calls should be forwarded here"""
     response = HttpResponse()
-    print "Called!"
     if request.method == "POST":
         try:
             response.write(xmlrpcdispatcher._marshaled_dispatch(request.raw_post_data))
