@@ -3,6 +3,18 @@
 
 = Introduction =
 
-Method introspection in django_xmlrpc is an issue because the XML-RPC dispatcher that it uses, SimpleXMLRPCServer.SimpleXMLRPCDispatcher, doesn't support the system.methodHelp() and system.methodSignature() methods. This is most likely because they're not straightforward to implement in a dynamic language like Python.
+Method introspection in django_xmlrpc is an issue because the XML-RPC dispatcher that it uses, SimpleXMLRPCServer.SimpleXMLRPCDispatcher, doesn't support the system.methodSignature() method.
 
-This page will define how django_xmlrpc will handle the support of system.methodHelp() and system.methodSignature().
+= Proposed Signature Format =
+
+Perhaps the simplest (but not the nicest) way to declare method signatures is to add them as to the exposed functions as attributes, thus:
+
+{{{
+def some_xmlrpc_func(spam, eggs):
+    return "Value of spam: %s, value of eggs: %s" % (spam, eggs)
+
+# Add a method signature for the function
+some_xmlrpc_func.xmlrpc_signature = {'returns': string, 'args': [string, string]}
+}}}
+
+The dispatcher can then check for these when system.methodSignature() gets called. If a signature can't be found for a given method the dispatcher can then respond appropriately.
