@@ -11,6 +11,10 @@ To use the functionality described on this page you need to use the introspectio
 
 Method introspection in django_xmlrpc is an issue because the XML-RPC dispatcher that it uses, SimpleXMLRPCServer.SimpleXMLRPCDispatcher, doesn't support the system.methodSignature() method.
 
+In order to get around this, django_xmlrpc subclasses SimpleXMLRPCDispatcher and looks for a signature property on each XML-RPC-registered method when system.methodSignature() is called on that method.
+
+The method signature can be added using the decorator `@xmlrpc_func`.
+
 = Adding a Signature to a Function =
 
 You can add an XML-RPC signature to a method using the `xmlrpc_func` decorator:
@@ -23,4 +27,4 @@ def hanging_on_the_wall(number, item):
     return "There are %i %ss hanging on the wall" % (number, item)
 }}}
 
-Bear in mind that if you don't specify a function, the XML-RPC dispatcher will take a punt on what the signature might be and will tell the client that the function's return type and arg types are all strings.
+Bear in mind that if you don't specify a signature for a function, the XML-RPC dispatcher will take a punt on what the signature might be and will tell the client that the function's return type and arg types are all strings.
