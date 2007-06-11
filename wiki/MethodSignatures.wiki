@@ -31,6 +31,17 @@ def hanging_on_the_wall(number, item):
 
 XML-RPC signatures are not essential when registering a function with django_xmlrpc. Although they can be of great use to XML-RPC clients looking to use the services you provide, you may choose not to use them.
 
-In this case, django_xmlrpc will use the `getargspec()` method provided by the `inspect` built-in Python module to find out how many parameters your method takes. Since the most interoperable type in these circumstances is a string, the client will be told that all these parameters should be strings and that the method returns a string. 
+In this case, django_xmlrpc will use the `getargspec()` method provided by the `inspect` built-in Python module to find out how many parameters your method takes. Since the most interoperable type in these circumstances is a string, the client will be told that all these parameters should be strings and that the method returns a string. For example, django_xmlrpc will give the following a default signature of `[string, string, string, string]`, which in this case is fine:
 
-There is a chance that this could lead to some nasty surprises for clients; please bear it in mind if you chose not to add XML-RPC signatures to your methods.
+{{{
+def my_xmlrpc_method(spam, eggs, ham):
+    return spam + " " + eggs + " " + ham
+}}}
+
+
+There is a chance that this could lead to some nasty surprises for clients; please bear it in mind if you chose not to add XML-RPC signatures to your methods. For example, not specifying a signature here could lead to problems:
+
+{{{
+def my_other_xmlrpc_method(his_shoe, his_gourd):
+    return his_shoe * his_gourd
+}}}
