@@ -17,7 +17,12 @@ The method signature can be added using the decorator `@xmlrpc_func`, which can 
 
 = Adding a Signature to a Function =
 
-You can add an XML-RPC signature to a method using the `xmlrpc_func` decorator:
+You can add an XML-RPC signature to a method using the `xmlrpc_func` decorator, which takes two named methods:
+
+  * '''returns''': A string representation of the return type of the function. At present this should be limited to one of the options provided [http://www.xmlrpc.com/spec here] (under the section labelled ''Scalar <value>s''.
+  * '''args''': A list of the parameter types for your function, in the order that they are specified in the function definition. If your function takes no arguments, you can leave this parameter out of your `@xmlrpc_func` decorator.
+
+Here's an example method signature:
 
 {{{
 from django_xmlrpc.decorators import xmlrpc_func
@@ -26,6 +31,8 @@ from django_xmlrpc.decorators import xmlrpc_func
 def hanging_on_the_wall(number, item):
     return "There are %i %ss hanging on the wall" % (number, item)
 }}}
+
+When `system.methodSignature()` is called on this method the signature returned will be `['string', 'int', 'string']`.
 
 == What happens if I don't specify signatures? ==
 
@@ -37,7 +44,6 @@ In this case, django_xmlrpc will use the `getargspec()` method provided by the `
 def my_xmlrpc_method(spam, eggs, ham):
     return spam + " " + eggs + " " + ham
 }}}
-
 
 There is a chance that this could lead to some nasty surprises for clients; please bear it in mind if you chose not to add XML-RPC signatures to your methods. For example, not specifying a signature here could lead to problems:
 
