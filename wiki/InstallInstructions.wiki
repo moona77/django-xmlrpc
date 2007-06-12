@@ -8,6 +8,8 @@ Therefore, all revision control will now be carried out using [http://bazaar-vcs
 
 = Installation =
 
+== Getting the Source ==
+
 Firstly grab a copy of the code from Launchpad and stick it somewhere in your PYTHONPATH:
 
 {{{
@@ -20,9 +22,13 @@ If you prefer a guaranteed stable release, use the stable branch:
 bzr branch https://code.launchpad.net/django-xmlrpc/stable/ django_xmlrpc
 }}}
 
-Secondly, add `django_xmlrpc` to your `INSTALLED_APPS` in settings.py.
+Alternatively you can download the latest release as a tarball from the project's [http://code.google.com/p/django-xmlrpc/downloads/list?q=label:Latest-Release download page]
 
-Thirdly, you need to add an entry to your root urlconf (urls.py) pointing all XML-RPC requests to django_xmlrpc's handle_xmlrpc function, thus:
+== Configuring django_xmlrpc ==
+
+First of all, add `django_xmlrpc` to your `INSTALLED_APPS` in settings.py. Since django_xmlrpc is in your PYTHONPATH this should Just Work. If Django starts to die at this point, check that django_xmlrpc is somewhere that Django can find it.
+
+Next, you need to add an entry to your root urlconf (urls.py) pointing all XML-RPC requests to django_xmlrpc's handle_xmlrpc function, thus:
 
 {{{
 urlpatterns = patterns (
@@ -30,7 +36,7 @@ urlpatterns = patterns (
 )
 }}}
 
-Finally, you need to add an `XMLRPC_METHODS` section to settings.py, exposing the methods you want to the XML-RPC interface. For example:
+Finally, you need to add an `XMLRPC_METHODS` section to settings.py, exposing the methods you want to the XML-RPC interface as described in ExposingMethods. For example:
 
 {{{
 XMLRPC_METHODS = (
