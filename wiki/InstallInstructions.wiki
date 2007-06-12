@@ -22,7 +22,7 @@ If you prefer a guaranteed stable release, use the stable branch:
 bzr branch https://code.launchpad.net/django-xmlrpc/stable/ django_xmlrpc
 }}}
 
-Alternatively you can download the latest release as a tarball from the project's [http://code.google.com/p/django-xmlrpc/downloads/list?q=label:Latest-Release download page]
+Alternatively you can download the latest release as a tarball from the project's [http://code.google.com/p/django-xmlrpc/downloads/list?q=label:Latest-Release download page]. Simply extract this to a location within your PYTHONPATH.
 
 == Configuring django_xmlrpc ==
 
