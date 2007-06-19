@@ -1,9 +1,9 @@
-#summary Details of how XML-RPC methods should declare their signatures and help sections
+﻿#summary Details of how XML-RPC methods should declare their signatures and help sections
 #labels Phase-Design,Featured
 
 = Note =
 
-*This page is not applicable to the trunk or the 0.1 release*.
+*This page is not applicable to 0.1 release*.
 
 To use the functionality described on this page you need to use the introspection-dev branch, available [https://code.launchpad.net/~codedragon/django-xmlrpc/introspection-dev here].
 
