@@ -1,0 +1,46 @@
+## A Note on Version Control ##
+
+As of June 6<sup>th</sup> 2007 django\_xmlrpc no longer uses subversion for version control. This is mainly due to the fact that working locally in Bazaar, and having not organised myself properly in the first place, meant that there was a lot of cruft creeping into the process of releases and pushing new revisions to svn.
+
+Therefore, all revision control will now be carried out using [Bazaar](http://bazaar-vcs.org), using [Launchpad](http://launchpad.net) for branch hosting. This shouldn't affect things too much, as there will always be tarballs of the latest stable release available for you to use. It doesn't affect the development process because, as of the time of writing, I was the only one with commit access to subversion.
+
+# Installation #
+
+## Getting the Source ##
+
+Firstly grab a copy of the code from Launchpad and stick it somewhere in your PYTHONPATH:
+
+```
+bzr branch https://code.launchpad.net/django-xmlrpc/trunk/ django_xmlrpc
+```
+
+If you prefer a guaranteed stable release, use the stable branch:
+
+```
+bzr branch https://code.launchpad.net/django-xmlrpc/stable/ django_xmlrpc
+```
+
+Alternatively you can download the latest release as a tarball from the project's [download page](http://code.google.com/p/django-xmlrpc/downloads/list?q=label:Latest-Release). Simply extract this to a location within your PYTHONPATH.
+
+## Configuring django\_xmlrpc ##
+
+First of all, add `django_xmlrpc` to your `INSTALLED_APPS` in settings.py. Since django\_xmlrpc is in your PYTHONPATH this should Just Work. If Django starts to die at this point, check that django\_xmlrpc is somewhere that Django can find it.
+
+Next, you need to add an entry to your root urlconf (urls.py) pointing all XML-RPC requests to django\_xmlrpc's handle\_xmlrpc function, thus:
+
+```
+urlpatterns = patterns (
+    (r'xmlrpc/$', 'django_xmlrpc.views.handle_xmlrpc',),
+)
+```
+
+Finally, you need to add an `XMLRPC_METHODS` section to settings.py, exposing the methods you want to the XML-RPC interface as described in ExposingMethods. For example:
+
+```
+XMLRPC_METHODS = (
+    # We list methods to be exposed in the form (<method path>, <xml-rpc name>,)
+    ('mysite.app.views.do_stuff', 'do_stuff',),
+)
+```
+
+... and you should be good to go.
